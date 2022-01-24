@@ -52,5 +52,5 @@ if __name__ == '__main__':
     pos = graphviz_layout(g, prog="dot")
     nx.draw_networkx(g, pos=pos, with_labels=True, labels=node_map,
                      node_shape="", node_size=1000)
-    plt.savefig('ast.png')
+    plt.savefig('artifacts/ast.png')
     # plt.show()
