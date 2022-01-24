@@ -14,7 +14,3 @@ def fib(n: int) -> List[int]:
         b = tmp
         n = n - 1
     return result
-
-
-if __name__ == '__main__':
-    print(fib(int(input())))
