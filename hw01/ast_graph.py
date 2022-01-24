@@ -2,17 +2,26 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import ast
 
-
 node_map = {}
 cnt = 0
 
 
 def map_name(cnt, node):
     # v1
-    return str(node.__class__.__name__)[0:10]
+    if isinstance(node, ast.Constant):
+        return ast.unparse(node)
+    if isinstance(node, ast.Name):
+        return ast.unparse(node)
+    if isinstance(node, ast.BinOp):
+        return node.op.__class__.__name__
+    if isinstance(node, ast.Lt):
+        return "<"
+    if isinstance(node, ast.Gt):
+        return ">"
+    return str(node.__class__.__name__)
 
 
-def iterate_node(node, parent_cnt, g, off=0):
+def iterate_node(node, parent_cnt, g, depth=0):
     global cnt, node_map
 
     cnt += 1
@@ -23,9 +32,11 @@ def iterate_node(node, parent_cnt, g, off=0):
 
     node_map[cnt] = map_name(mycnt, node)
 
+    if node is ast.Name:
+        return
+
     for child in ast.iter_child_nodes(node):
-        print("-"*off + str(child))
-        iterate_node(child, mycnt, g, off+2)
+        iterate_node(child, mycnt, g, depth + 1)
 
 
 if __name__ == '__main__':
@@ -36,5 +47,3 @@ if __name__ == '__main__':
 
     nx.draw_planar(g, with_labels=True, labels=node_map)
     plt.show()
-
-
