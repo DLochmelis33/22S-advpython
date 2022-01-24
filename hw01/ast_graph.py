@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import ast
+import pydot
+from networkx.drawing.nx_pydot import graphviz_layout
 
 node_map = {}
 cnt = 0
@@ -45,5 +47,10 @@ if __name__ == '__main__':
         tree = ast.parse(f.read())
         iterate_node(tree, -1, g)
 
-    nx.draw_planar(g, with_labels=True, labels=node_map)
-    plt.show()
+    fig = plt.gcf()
+    fig.set_size_inches(30, 22)
+    pos = graphviz_layout(g, prog="dot")
+    nx.draw_networkx(g, pos=pos, with_labels=True, labels=node_map,
+                     node_shape="", node_size=1000)
+    plt.savefig('ast.png')
+    # plt.show()
