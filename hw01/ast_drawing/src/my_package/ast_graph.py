@@ -1,14 +1,13 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import ast
-import pydot
 from networkx.drawing.nx_pydot import graphviz_layout
 
 node_map = {}
 cnt = 0
 
 
-def map_name(cnt, node):
+def _map_name(cnt, node):
     # v1
     if isinstance(node, ast.Constant):
         return ast.unparse(node)
@@ -23,7 +22,7 @@ def map_name(cnt, node):
     return str(node.__class__.__name__)
 
 
-def iterate_node(node, parent_cnt, g, depth=0):
+def _iterate_node(node, parent_cnt, g, depth=0):
     global cnt, node_map
 
     cnt += 1
@@ -32,20 +31,19 @@ def iterate_node(node, parent_cnt, g, depth=0):
     if parent_cnt != -1:
         g.add_edge(parent_cnt, cnt)
 
-    node_map[cnt] = map_name(mycnt, node)
+    node_map[cnt] = _map_name(mycnt, node)
 
     if node is ast.Name:
         return
 
     for child in ast.iter_child_nodes(node):
-        iterate_node(child, mycnt, g, depth + 1)
+        _iterate_node(child, mycnt, g, depth + 1)
 
 
-if __name__ == '__main__':
+def generate_ast(file):
     g = nx.DiGraph()
-    with open('fib.py', 'r') as f:
-        tree = ast.parse(f.read())
-        iterate_node(tree, -1, g)
+    tree = ast.parse(file.read())
+    _iterate_node(tree, -1, g)
 
     fig = plt.gcf()
     fig.set_size_inches(30, 22)
@@ -54,3 +52,7 @@ if __name__ == '__main__':
                      node_shape="", node_size=1000)
     plt.savefig('artifacts/ast.png')
     # plt.show()
+
+
+if __name__ == '__main__':
+    generate_ast(open('../../../fib.py'))
