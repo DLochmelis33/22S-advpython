@@ -20,7 +20,7 @@ RUN apt install -y graphviz && \
     apt install -y texlive-latex-base 
 
 # copy code into Docker
-ADD ./../a.py ./../image.py ./
+ADD ./a.py ./image.py ./
 
 # run the program
 RUN python3.9 image.py
