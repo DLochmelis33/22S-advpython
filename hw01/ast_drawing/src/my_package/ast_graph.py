@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 import ast
+import pydot
 from networkx.drawing.nx_pydot import graphviz_layout
 
 node_map = {}
