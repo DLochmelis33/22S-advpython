@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     res_mul = (my1 * my2)._data
     assert res_mul == (data1 * data2).tolist()
-    # asterisk in filename is not allowed (on Windows and in PyCharm)
+    # asterisk in filename is not allowed (on Windows, and for a good reason)
     with open('artifacts/easy/matrix_mul.txt', 'w') as f:
         f.write(str(res_mul))
 
